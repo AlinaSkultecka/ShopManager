@@ -18,12 +18,18 @@ namespace ShopManager.Customer
         public string Username { get; private set; }
         public string Password { get; private set; }
         public UserLevel Level { get; private set; }
-        public List<ShoppingCartItem> ShoppingCart { get; set; } = new List<ShoppingCartItem>();
+        private List<ShoppingCartItem> _shoppingCart;
+        public List<ShoppingCartItem> ShoppingCart
+        {
+            get { return _shoppingCart; }
+            set { _shoppingCart = value; }
+        }
         public Customer(string username, string password, UserLevel level = UserLevel.BronseLevel)
         {
             Username = username;
             Password = password;
             Level = level;
+            _shoppingCart = new List<ShoppingCartItem>();
         }
 
         //Method to allow users to create a new profile
