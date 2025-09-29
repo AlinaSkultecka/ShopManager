@@ -18,17 +18,17 @@ namespace ShopManager
                 case ShopManager.Customer.UserLevel.BronseLevel:
                     Console.WriteLine("You are at Bronse Level, your member discount is 5%.");
                     decimal grandTotalDiscountedBronse = grandTotal * 0.95m;
-                    Console.WriteLine($"\nYour total after discount is {grandTotalDiscountedBronse.ToString("C", swedish)}.");
+                    Console.WriteLine($"\nYour total price after the discount is applied is {grandTotalDiscountedBronse.ToString("C", swedish)}.");
                     break;
                 case ShopManager.Customer.UserLevel.SilverLevel:
                     Console.WriteLine("You are at Silver Level, your member discount is 10%.");
                     decimal grandTotalDiscountedSilver = grandTotal * 0.90m;
-                    Console.WriteLine($"\nYour total after discount is {grandTotalDiscountedSilver.ToString("C", swedish)}.");
+                    Console.WriteLine($"\nYour total price after the discount is applied is {grandTotalDiscountedSilver.ToString("C", swedish)}.");
                     break;
                 case ShopManager.Customer.UserLevel.GoldLevel:
                     Console.WriteLine("You are at Gold Level, your member discount is 15%.");
                     decimal grandTotalDiscountedGold = grandTotal * 0.85m;
-                    Console.WriteLine($"\nYour total after discount is {grandTotalDiscountedGold.ToString("C", swedish)}.");
+                    Console.WriteLine($"\nYour total price after the discount is applied is {grandTotalDiscountedGold.ToString("C", swedish)}.");
                     break;
             }
         }

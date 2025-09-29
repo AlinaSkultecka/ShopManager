@@ -157,6 +157,7 @@ namespace ShopManager
                 Console.WriteLine("\nProcessing payment...");
                 System.Threading.Thread.Sleep(1500); // Simulate delay
                 Console.WriteLine("\nPayment successful! Thank you for your purchase.");
+                Discount.UpgradeMembership(user, grandTotal);
                 // Clear cart after payment
                 user.ShoppingCart.Clear();
             }
