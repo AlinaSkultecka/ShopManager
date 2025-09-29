@@ -47,7 +47,7 @@ namespace ShopManager
                     }
                 }
             }
-        }
+        }    
 
         private static void DisplayMenu()
         {
@@ -131,10 +131,7 @@ namespace ShopManager
                 Console.WriteLine("Invalid credentials!");
                 Console.ReadKey();
             }
-
-            
         }
-
     }
 }
 

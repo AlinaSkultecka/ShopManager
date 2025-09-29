@@ -1,4 +1,5 @@
-﻿using ShopManager.Product;
+﻿using ShopManager.Customer;
+using ShopManager.Product;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -105,16 +106,19 @@ namespace ShopManager
             CultureInfo swedish = new CultureInfo("sv-SE");
             if (user.ShoppingCart.Count == 0)
             {
+
+                Console.WriteLine(user.ToString());
                 Console.WriteLine("Your cart is empty!");
                 Console.ReadKey();
                 return;
             }
             else
             {
-                Console.WriteLine("=== Your Shopping Cart ===");
+                Console.WriteLine(user.ToString());
+                Console.WriteLine("\n=== Your Shopping Cart ===");
                 foreach (var item in user.ShoppingCart)
                 {
-                    Console.WriteLine($"{item.Product.Name} | Qty: {item.Quantity} | Price: {item.Product.Price.ToString("C", swedish)} | Total: {item.TotalPrice:C}");
+                    Console.WriteLine($"{item.Product.Name} | Qty: {item.Quantity} | Price: {item.Product.Price.ToString("C", swedish)} | Total: {item.TotalPrice.ToString("C", swedish)}");
                 }
 
                 decimal grandTotal = user.ShoppingCart.Sum(c => c.TotalPrice);
@@ -142,15 +146,17 @@ namespace ShopManager
             {
                 grandTotal += item.TotalPrice;
             }
-            
-            Console.WriteLine($"Your total is {grandTotal.ToString("C", swedish)}. Proceed to payment? (yes/no): ");
+
+            Console.WriteLine($"Your total price without a discount is {grandTotal.ToString("C", swedish)}.\n");
+            Discount.ShowUserDiscount(user, grandTotal);
+            Console.WriteLine("Proceed to payment? (yes/no):");
             string choice = Console.ReadLine()!.ToLower();
             if (choice == "yes")
             {
                 // Simulate payment processing
-                Console.WriteLine("Processing payment...");
-                System.Threading.Thread.Sleep(2000); // Simulate delay
-                Console.WriteLine("Payment successful! Thank you for your purchase.");
+                Console.WriteLine("\nProcessing payment...");
+                System.Threading.Thread.Sleep(1500); // Simulate delay
+                Console.WriteLine("\nPayment successful! Thank you for your purchase.");
                 // Clear cart after payment
                 user.ShoppingCart.Clear();
             }

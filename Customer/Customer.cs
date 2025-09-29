@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,22 +27,35 @@ namespace ShopManager.Customer
         }
 
         //Method to allow users to create a new profile
-            public Customer RegisterUser(string username, string password)
-            {
+        public Customer RegisterUser(string username, string password)
+        {
             return new Customer(username, password);
-            }
+        }
 
         //Method to allow users to log in
-            public bool Login(string username, string password, List<Customer> userList)
+        public bool Login(string username, string password, List<Customer> userList)
+        {
+            foreach (Customer user in userList)
             {
-                foreach (Customer user in userList)
+                if (user.Username == username && user.Password == password)
                 {
-                    if (user.Username == username && user.Password == password)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-                return false;
             }
+             return false;
+        }
+
+        //Method to set user level
+        public void SetLevel(UserLevel newLevel)
+        {
+            Level = newLevel;
+        }
+
+        //Friendly display ToString()
+        public override string ToString()
+        {
+            return $"Username: {Username}, Level: {Level}, Cart Items: {ShoppingCart.Count}";
+        }
+
     }
 }
