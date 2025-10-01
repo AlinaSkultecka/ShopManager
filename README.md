@@ -1,7 +1,5 @@
 # Toy Shop Console Application
 
-## Description
-
 This is a **console-based toy shop application** written in C#.  
 It allows users to:
 
