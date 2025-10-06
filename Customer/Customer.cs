@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ShopManager.Customer
 {
@@ -18,12 +19,14 @@ namespace ShopManager.Customer
         public string Username { get; private set; }
         public string Password { get; private set; }
         public UserLevel Level { get; private set; }
+
         private List<ShoppingCartItem> _shoppingCart;
         public List<ShoppingCartItem> ShoppingCart
         {
             get { return _shoppingCart; }
             set { _shoppingCart = value; }
         }
+   
         public Customer(string username, string password, UserLevel level = UserLevel.BronseLevel)
         {
             Username = username;
@@ -31,6 +34,12 @@ namespace ShopManager.Customer
             Level = level;
             _shoppingCart = new List<ShoppingCartItem>();
         }
+
+        public override string ToString()
+        {
+            return $"{Username},{Password},{Level}";
+        }
+
 
         //Method to allow users to create a new profile
         public Customer RegisterUser(string username, string password)
@@ -55,12 +64,6 @@ namespace ShopManager.Customer
         public void SetLevel(UserLevel newLevel)
         {
             Level = newLevel;
-        }
-
-        //Friendly display ToString()
-        public override string ToString()
-        {
-            return $"Username: {Username}, Level: {Level}, Cart Items: {ShoppingCart.Count}";
         }
 
     }

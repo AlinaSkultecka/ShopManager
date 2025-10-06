@@ -31,103 +31,190 @@ namespace ShopManager
 
         public static void AddToShoppingCart(Customer.Customer user)
         {
-            ShowProductInfo();
-            Console.WriteLine("\nType 'Done' anytime to finish adding products.");
-
             while (true)
             {
+                // Show product list
+                ShowProductInfo();
+                Console.WriteLine("\nType 'Done' anytime to finish adding products.");
+
                 // Get product ID
                 Console.Write("\nEnter the ID of the product you want to buy: ");
-                string inputId = Console.ReadLine()!.ToLower();
+                string inputId = (Console.ReadLine() ?? "").Trim().ToLower();
 
                 if (inputId == "done")
-                    return; // exit to main menu
+                    break;
 
                 if (!int.TryParse(inputId, out int productId))
                 {
                     Console.WriteLine("Invalid input! Please enter a product ID or 'Done'.");
+                    Console.ReadKey(true);
                     continue;
                 }
 
-                //Find product
-                Product.ProductDetails product = null;
-                foreach (var p in Product.ProductsList.AllProducts)
-                {
-                    if (p.Id == productId)
-                    {
-                        product = p;
-                        break;
-                    }
-                }
+                // Find product
+                var product = Product.ProductsList.AllProducts.FirstOrDefault(p => p.Id == productId);
                 if (product == null)
                 {
                     Console.WriteLine("Product not found.");
+                    Console.ReadKey(true);
                     continue;
                 }
 
-                //Get quantity
-                Console.Write("Enter quantity (available stock: " + product.Stock + "): ");
-                string inputQty = Console.ReadLine()!.ToLower();
+                // Get quantity
+                Console.Write($"Enter quantity (available stock: {product.Stock}): ");
+                string inputQty = (Console.ReadLine() ?? "").Trim().ToLower();
 
                 if (inputQty == "done")
-                    return; // exit to main menu
+                    break;
 
                 if (!int.TryParse(inputQty, out int quantity))
                 {
                     Console.WriteLine("Invalid input! Please enter a number or 'Done'.");
+                    Console.ReadKey(true);
                     continue;
                 }
 
                 if (quantity <= 0)
                 {
                     Console.WriteLine("Quantity must be more than 0.");
+                    Console.ReadKey(true);
                     continue;
                 }
 
                 if (quantity > product.Stock)
                 {
                     Console.WriteLine("Not enough stock available.");
+                    Console.ReadKey(true);
                     continue;
                 }
 
-                //Add to cart
+                // Add to cart
                 user.ShoppingCart.Add(new ShoppingCartItem(product, quantity));
                 product.Stock -= quantity; // decrease stock
 
-                Console.WriteLine($"{quantity} x {product.Name} added to your shopping cart.");
-
+                Console.WriteLine($"\n{quantity} x {product.Name} added to your shopping cart.\n");
+                Console.ReadKey(true);
             }
         }
 
         // Case 2: Shopping cart
         public static void ViewShoppingCart(Customer.Customer user)
         {
-            Console.Clear();
+            //Console.Clear();
             CultureInfo swedish = new CultureInfo("sv-SE");
+
             if (user.ShoppingCart.Count == 0)
             {
-
-                Console.WriteLine(user.ToString());
                 Console.WriteLine("Your cart is empty!");
                 Console.ReadKey();
                 return;
             }
-            else
+
+
+            bool running = true;
+            while (running)
             {
-                Console.WriteLine(user.ToString());
-                Console.WriteLine("\n=== Your Shopping Cart ===");
+                Console.Clear();
+                Console.WriteLine("=== Your Shopping Cart ===");
+
+                decimal grandTotal = 0;
                 foreach (var item in user.ShoppingCart)
                 {
-                    Console.WriteLine($"{item.Product.Name} | Qty: {item.Quantity} | Price: {item.Product.Price.ToString("C", swedish)} | Total: {item.TotalPrice.ToString("C", swedish)}");
+                    Console.WriteLine($"ID: {item.Product.Id} | {item.Product.Name} | Qty: {item.Quantity} | Price: {item.Product.Price.ToString("C", swedish)} | Total: {item.TotalPrice.ToString("C", swedish)}");
+                    grandTotal += item.TotalPrice;
                 }
 
-                decimal grandTotal = user.ShoppingCart.Sum(c => c.TotalPrice);
                 Console.WriteLine($"Grand Total: {grandTotal.ToString("C", swedish)}");
 
-                Console.WriteLine("\nPress any key to return to the menu...");
-                Console.ReadKey();
+                DisplayShoppingCartMenu();
+
+                string choice = Console.ReadLine() ?? "";
+                switch (choice)
+                {
+                    case "1":
+                        RemoveItemFromCart(user);
+
+                        // If cart becomes empty, exit loop
+                        if (user.ShoppingCart.Count == 0)
+                        {
+                            Console.WriteLine("\nYour cart is now empty.");
+                            Console.WriteLine("Press any key to return to the menu...");
+                            Console.ReadKey();
+                            running = false;
+                        }
+                        break;
+
+                    case "0":
+                        running = false; // exit
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid option. Press any key to try again...");
+                        Console.ReadKey();
+                        break;
+                }
             }
         }
+
+        private static void DisplayShoppingCartMenu()
+        {
+            Console.WriteLine("\nChoose what you want to do:");
+            Console.WriteLine("1. Remove an item");
+            Console.WriteLine("0. Go back to menu");
+            Console.Write("Enter your choice: ");
+        }
+
+        private static void RemoveItemFromCart(Customer.Customer user)
+        {
+            Console.Write("Enter the ID of the product to remove: ");
+            if (!int.TryParse(Console.ReadLine(), out int productID))
+            {
+                Console.WriteLine("Invalid input! Please enter a number.");
+                return;
+            }
+
+            ShoppingCartItem? itemToRemove = null;
+
+            // Find the item in the shopping cart
+            foreach (var item in user.ShoppingCart)
+            {
+                if (item.Product.Id == productID)
+                {
+                    itemToRemove = item;
+                    break; // stop searching once found
+                }
+            }
+
+            if (itemToRemove != null)
+            {
+                Console.Write($"Enter quantity to remove (max {itemToRemove.Quantity}): ");
+                if (!int.TryParse(Console.ReadLine(), out int qtyToRemove) || qtyToRemove <= 0)
+                {
+                    Console.WriteLine("Invalid quantity!");
+                    return;
+                }
+
+                if (qtyToRemove >= itemToRemove.Quantity)
+                {
+                    // Remove the entire item
+                    itemToRemove.Product.Stock += itemToRemove.Quantity;
+                    user.ShoppingCart.Remove(itemToRemove);
+                    Console.WriteLine($"{itemToRemove.Product.Name} completely removed from your cart.");
+                }
+                else
+                {
+                    // Remove part of the quantity
+                    itemToRemove.Quantity -= qtyToRemove;
+                    itemToRemove.Product.Stock += qtyToRemove;
+                    Console.WriteLine($"{qtyToRemove} of {itemToRemove.Product.Name} removed from your cart. Remaining: {itemToRemove.Quantity}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Item not found in your cart.");
+            }
+        }
+
 
         // Case 3: Make payment
         public static void MakePayment(Customer.Customer user)

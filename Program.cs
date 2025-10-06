@@ -1,6 +1,11 @@
 ﻿using ShopManager.Customer;
 using ShopManager.Product;
 using System.Linq;
+using System.Media;
+using System;
+using System.Threading.Tasks;
+using NAudio.Wave;
+
 
 namespace ShopManager
 {
@@ -14,6 +19,13 @@ namespace ShopManager
         // Simple user interface in the console
         static void Main(string[] args)
         {
+            string filePath = "C:\\Users\\grigo\\Desktop\\C#\\3. Inlämning upgifter\\ShopManager\\music_for_app.wav";
+
+            using var audioFile = new AudioFileReader(filePath);
+            using var outputDevice = new WaveOutEvent();
+            outputDevice.Init(audioFile);
+            outputDevice.Play();
+
             // Add default/mock customers
             var mock = new Customer.MockCustomer();
             users.AddRange(mock.Customers);
@@ -64,7 +76,8 @@ namespace ShopManager
         private static void DisplayUserMenu()
         {
             Console.Clear();
-            Console.WriteLine($"=== Hello {currentUser!.Username} ===");
+
+            Console.WriteLine($"=== Hello {currentUser!.Username}, {currentUser!.Level} customer ===");
             Console.WriteLine("1. Choose a product");
             Console.WriteLine("2. Shopping cart");
             Console.WriteLine("3. Pay");
@@ -95,6 +108,13 @@ namespace ShopManager
             // Create and add the new user
             var user = new Customer.Customer(username, password);
             users.Add(user);
+
+            // Add new customer to the text file
+            string filePath = "C:\\Users\\grigo\\Desktop\\C#\\3. Inlämning upgifter\\ShopManager\\Customer\\MockCustomers.txt";
+            using (StreamWriter sw = new StreamWriter(filePath, true)) // 'true' for adding to the file
+            {
+                sw.WriteLine(user.ToString()); // ToString() = "username,password,Level"
+            }
             Console.WriteLine("Registration successful!\n");
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
@@ -117,7 +137,7 @@ namespace ShopManager
                 {
                     currentUser = u;  // set the logged-in user
                     loggedIn = true;
-                    break;  // stop checking after we find the user
+                    break;  // stop checking after the user is found
                 }
             }
 
