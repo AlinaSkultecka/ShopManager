@@ -5,25 +5,25 @@ ShopManager is a **console-based toy shop application** built with C#. It allows
 ## ✨ Features
 
 - **👤 User Management**
-  - Register a new account 📝
-  - Login with username and password 🔑
+  - Register a new account 
+  - Login with username and password 
   - Tracks user membership levels (Bronze 🥉, Silver 🥈, Gold 🥇)
 
 - **🛍 Product Management**
-  - Browse a categorized list of products 🧸
-  - View product details, stock, and price 💰
+  - Browse a categorized list of products 
+  - View product details, stock, and price 
 
 - **🛒 Shopping Cart**
-  - Add products to the cart ➕
-  - Remove specific quantities or entire items ➖
-  - View updated cart totals in real-time 🔄
+  - Add products to the cart 
+  - Remove specific quantities or entire items 
+  - View updated cart totals in real-time 
 
 - **💳 Payments**
-  - Calculate total price 🧮
-  - Apply discounts based on user level 🏷️
-  - Upgrade membership automatically after purchases ⬆️
-
+  - Calculate total price 
+  - Apply discounts based on user level 
+  - Upgrade membership automatically after purchases ️
+    
 - **💾 Data Persistence**
-  - Customers are loaded from a text file 📂
-  - Newly registered users are saved to a file for future sessions 💾
+  - Customers are loaded from a text file 
+  - Newly registered users are saved to a file for future sessions
 
