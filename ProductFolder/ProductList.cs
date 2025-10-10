@@ -4,19 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopManager.Product
+namespace ShopManager.ProductFolder
 {
-    public class SoftToy : Product.ProductDetails { }
-    public class  Lego : Product.ProductDetails { }
-    public class BabyToy : Product.ProductDetails { }
-    public class BoardGame : Product.ProductDetails { }
+    public class SoftToy : ProductFolder.ProductProperties { }
+    public class  Lego : ProductFolder.ProductProperties { }
+    public class BabyToy : ProductFolder.ProductProperties { }
+    public class BoardGame : ProductFolder.ProductProperties { }
 
+    // Get randome id
     public static class IdGenerator
     {
         private static int _currentId = 0;
         public static int NextId() => ++_currentId;
     }
-    public class ProductsList
+    
+    public class ProductList
     {
          public static SoftToy[] SoftToys = new SoftToy[] {
              new SoftToy {Id = IdGenerator.NextId(), Name = "Teddy Bear", ProductCategory = "SoftToy", Price = 199.99m, Stock = 50},
@@ -40,13 +42,11 @@ namespace ShopManager.Product
              };
 
         // Combine all categories into one list
-        public static List<ProductDetails> AllProducts =>
-            SoftToys.Cast<ProductDetails>()
+        public static List<ProductProperties> AllProducts =>
+            SoftToys.Cast<ProductProperties>()
             .Concat(Lego)
             .Concat(BabyToy)
             .Concat(BoardGame)
-            .ToList();
-
-        
+            .ToList(); 
     }
 }

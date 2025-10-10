@@ -1,4 +1,4 @@
-﻿using ShopManager.Customer;
+﻿using ShopManager.CustomerFolder;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,22 +10,22 @@ namespace ShopManager
 {
     public class Discount
     {
-        public static void ShowUserDiscount(Customer.Customer currentUser, decimal grandTotal)
+        public static void ShowUserDiscount(CustomerFolder.CustomerProperties currentUser, decimal grandTotal)
         {
             CultureInfo swedish = new CultureInfo("sv-SE");
             switch (currentUser.Level)
             {
-                case ShopManager.Customer.UserLevel.BronseLevel:
+                case ShopManager.CustomerFolder.CustomerLevel.BronseLevel:
                     Console.WriteLine("You are at Bronse Level, your member discount is 5%.");
                     decimal grandTotalDiscountedBronse = grandTotal * 0.95m;
                     Console.WriteLine($"\nYour total price after the discount is applied is {grandTotalDiscountedBronse.ToString("C", swedish)}.");
                     break;
-                case ShopManager.Customer.UserLevel.SilverLevel:
+                case ShopManager.CustomerFolder.CustomerLevel.SilverLevel:
                     Console.WriteLine("You are at Silver Level, your member discount is 10%.");
                     decimal grandTotalDiscountedSilver = grandTotal * 0.90m;
                     Console.WriteLine($"\nYour total price after the discount is applied is {grandTotalDiscountedSilver.ToString("C", swedish)}.");
                     break;
-                case ShopManager.Customer.UserLevel.GoldLevel:
+                case ShopManager.CustomerFolder.CustomerLevel.GoldLevel:
                     Console.WriteLine("You are at Gold Level, your member discount is 15%.");
                     decimal grandTotalDiscountedGold = grandTotal * 0.85m;
                     Console.WriteLine($"\nYour total price after the discount is applied is {grandTotalDiscountedGold.ToString("C", swedish)}.");
@@ -34,17 +34,17 @@ namespace ShopManager
         }
 
         // Upgrade membership level 
-        public static void UpgradeMembership(Customer.Customer currentUser, decimal grandTotal)
+        public static void UpgradeMembership(CustomerFolder.CustomerProperties currentUser, decimal grandTotal)
         {
             if (grandTotal >= 1000)
             {
-                UserLevel previousLevel = currentUser.Level;
+                CustomerLevel previousLevel = currentUser.Level;
 
                 // Upgrade level
-                if (currentUser.Level == UserLevel.BronseLevel)
-                    currentUser.SetLevel(UserLevel.SilverLevel);
-                else if (currentUser.Level == UserLevel.SilverLevel)
-                    currentUser.SetLevel(UserLevel.GoldLevel);
+                if (currentUser.Level == CustomerLevel.BronseLevel)
+                    currentUser.SetLevel(CustomerLevel.SilverLevel);
+                else if (currentUser.Level == CustomerLevel.SilverLevel)
+                    currentUser.SetLevel(CustomerLevel.GoldLevel);
 
                 // Notify user
                 if (previousLevel != currentUser.Level)

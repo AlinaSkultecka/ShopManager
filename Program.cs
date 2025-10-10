@@ -1,5 +1,5 @@
-﻿using ShopManager.Customer;
-using ShopManager.Product;
+﻿using ShopManager.CustomerFolder;
+using ShopManager.ProductFolder;
 using System.Linq;
 using System.Media;
 using System;
@@ -11,29 +11,23 @@ namespace ShopManager
 {
     internal class Program
     {
-        private static List<Customer.Customer> users = new List<Customer.Customer>();
-        private static Customer.Customer? currentUser = null;
+        private static List<CustomerFolder.CustomerProperties> users = new List<CustomerFolder.CustomerProperties>();
+        private static CustomerFolder.CustomerProperties? currentUser = null;
         public List<ShoppingCartItem> ShoppingCart = new List<ShoppingCartItem>();
 
         
         // Simple user interface in the console
         static void Main(string[] args)
         {
-            string filePath = "C:\\Users\\grigo\\Desktop\\C#\\3. Inlämning upgifter\\ShopManager\\music_for_app.wav";
-
-            using var audioFile = new AudioFileReader(filePath);
-            using var outputDevice = new WaveOutEvent();
-            outputDevice.Init(audioFile);
-            outputDevice.Play();
-
             // Add default/mock customers
-            var mock = new Customer.MockCustomer();
+            var mock = new CustomerFolder.CustomerConstructor();
             users.AddRange(mock.Customers);
 
             while (true)
             {
                 if (currentUser == null)
                 {
+                    // Login in or register
                     DisplayMenu();
                     string choice = Console.ReadLine() ?? "";
                     switch (choice)
@@ -46,6 +40,15 @@ namespace ShopManager
                 }
                 else
                 {
+                    // Music
+                    string filePath = "C:\\Users\\grigo\\Desktop\\C#\\3. Inlämning upgifter\\ShopManager\\music_for_app.wav";
+
+                    using var audioFile = new AudioFileReader(filePath);
+                    using var outputDevice = new WaveOutEvent();
+                    outputDevice.Init(audioFile);
+                    outputDevice.Play();
+
+                    // User is logged in
                     DisplayUserMenu();
                     string choice = Console.ReadLine() ?? "";
                     switch (choice)
@@ -96,7 +99,7 @@ namespace ShopManager
             string password = Console.ReadLine() ?? "";
 
             // Check if username already exists
-            foreach (Customer.Customer u in users)
+            foreach (CustomerFolder.CustomerProperties u in users)
             {
                 if (u.Username == username)
                 {
@@ -106,11 +109,11 @@ namespace ShopManager
             }
 
             // Create and add the new user
-            var user = new Customer.Customer(username, password);
+            var user = new CustomerFolder.CustomerProperties(username, password);
             users.Add(user);
 
             // Add new customer to the text file
-            string filePath = "C:\\Users\\grigo\\Desktop\\C#\\3. Inlämning upgifter\\ShopManager\\Customer\\MockCustomers.txt";
+            string filePath = "C:\\Users\\grigo\\Desktop\\C#\\3. Inlämning upgifter\\ShopManager\\CustomerFolder\\MockCustomers.txt";
             using (StreamWriter sw = new StreamWriter(filePath, true)) // 'true' for adding to the file
             {
                 sw.WriteLine(user.ToString()); // ToString() = "username,password,Level"
@@ -131,7 +134,7 @@ namespace ShopManager
 
             bool loggedIn = false;
 
-            foreach (Customer.Customer u in users)
+            foreach (CustomerFolder.CustomerProperties u in users)
             {
                 if (u.Username == username && u.Password == password)
                 {

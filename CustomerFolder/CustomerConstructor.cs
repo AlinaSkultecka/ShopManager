@@ -7,14 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace ShopManager.Customer
+namespace ShopManager.CustomerFolder
 {
-    public class MockCustomer
+    public class CustomerConstructor // is used to create mock customers from the text file
     {
-        public List<Customer> Customers { get; private set; } = new List<Customer>();
-        string filePath = "C:\\Users\\grigo\\Desktop\\C#\\3. Inlämning upgifter\\ShopManager\\Customer\\MockCustomers.txt";
+        public List<CustomerProperties> Customers { get; private set; } = new List<CustomerProperties>();
+        string filePath = "C:\\Users\\grigo\\Desktop\\C#\\3. Inlämning upgifter\\ShopManager\\CustomerFolder\\MockCustomers.txt";
 
-        public MockCustomer()
+        public CustomerConstructor()  
         {
             if (File.Exists(filePath))
             {
@@ -30,12 +30,12 @@ namespace ShopManager.Customer
                     {
                         string name = parts[0];
                         string password = parts[1];
-                        UserLevel level;
+                        CustomerLevel level;
 
                         // Convert user level to enum value
                         if (Enum.TryParse(parts[2], out level))
                         {
-                            Customers.Add(new Customer(name, password, level));
+                            Customers.Add(new CustomerProperties(name, password, level));
                         }
                     }
                 }

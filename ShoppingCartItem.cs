@@ -8,9 +8,9 @@ namespace ShopManager
 {
     public class ShoppingCartItem
     {
-        public Product.ProductDetails Product { get; set; }
+        public ProductFolder.ProductProperties Product { get; set; }
         public int Quantity { get; set; }
-        public ShoppingCartItem(Product.ProductDetails product, int quantity)
+        public ShoppingCartItem(ProductFolder.ProductProperties product, int quantity)
         {
             Product = product;
             Quantity = quantity;

@@ -6,19 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace ShopManager.Customer
+namespace ShopManager.CustomerFolder
 {
-    public enum UserLevel
+    public enum CustomerLevel
     {
         BronseLevel,
         SilverLevel,
         GoldLevel
     }
-    public class Customer
+    public class CustomerProperties
     {
         public string Username { get; private set; }
         public string Password { get; private set; }
-        public UserLevel Level { get; private set; }
+        public CustomerLevel Level { get; private set; }
 
         private List<ShoppingCartItem> _shoppingCart;
         public List<ShoppingCartItem> ShoppingCart
@@ -27,7 +27,7 @@ namespace ShopManager.Customer
             set { _shoppingCart = value; }
         }
    
-        public Customer(string username, string password, UserLevel level = UserLevel.BronseLevel)
+        public CustomerProperties(string username, string password, CustomerLevel level = CustomerLevel.BronseLevel)
         {
             Username = username;
             Password = password;
@@ -42,26 +42,26 @@ namespace ShopManager.Customer
 
 
         //Method to allow users to create a new profile
-        public Customer RegisterUser(string username, string password)
+        public CustomerProperties RegisterUser(string username, string password)
         {
-            return new Customer(username, password);
+            return new CustomerProperties(username, password);
         }
 
         //Method to allow users to log in
-        public bool Login(string username, string password, List<Customer> userList)
+        public bool Login(string username, string password, List<CustomerProperties> userList)
         {
-            foreach (Customer user in userList)
+            foreach (CustomerProperties user in userList)
             {
                 if (user.Username == username && user.Password == password)
                 {
                     return true;
                 }
             }
-             return false;
+            return false;
         }
 
         //Method to set user level
-        public void SetLevel(UserLevel newLevel)
+        public void SetLevel(CustomerLevel newLevel)
         {
             Level = newLevel;
         }

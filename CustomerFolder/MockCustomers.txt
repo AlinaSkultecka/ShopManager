@@ -2,7 +2,5 @@ Username, Password, UserLevel
 aa,11,BronseLevel
 Knatte,123,BronseLevel
 Fnatte,321,BronseLevel
-Tjatte,213,BronseLevelalina,24,BronseLevel
-alina,24,BronseLevel
+Tjatte,213,BronseLevel
 
-Skultecka,Alina,BronseLevel

@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopManager.Product
+namespace ShopManager.ProductFolder
 {
-    public class ProductDetails
+    public class ProductProperties
     {
         public int Id { get; set; } 
         public string ProductCategory { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public int Stock { get; set; }
-        public ProductDetails(int id, string ProductCategory, string name, decimal price, int stock)
+        public ProductProperties(int id, string ProductCategory, string name, decimal price, int stock)
         {
             Id = id;
             this.ProductCategory = ProductCategory;
@@ -21,7 +21,7 @@ namespace ShopManager.Product
             Price = price;
             Stock = stock;
         }
-        public ProductDetails() { }  //it is useed for initialization in ProductsList.cs
+        public ProductProperties() { }  //it is useed for initialization in ProductsList.cs
 
 
     }

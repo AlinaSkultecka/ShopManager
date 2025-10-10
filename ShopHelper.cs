@@ -1,5 +1,5 @@
-﻿using ShopManager.Customer;
-using ShopManager.Product;
+﻿using ShopManager.CustomerFolder;
+using ShopManager.ProductFolder;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,7 +16,7 @@ namespace ShopManager
         {
             Console.Clear();
             Console.WriteLine("PRODUCT LIST");
-            var grouped = ProductsList.AllProducts.GroupBy(p => p.ProductCategory);
+            var grouped = ProductList.AllProducts.GroupBy(p => p.ProductCategory);  //LINQ, some kind of magic
 
             foreach (var group in grouped)
             {
@@ -29,17 +29,17 @@ namespace ShopManager
             }
         }
 
-        public static void AddToShoppingCart(Customer.Customer user)
+        public static void AddToShoppingCart(CustomerFolder.CustomerProperties user)
         {
             while (true)
             {
-                // Show product list
+                // 1.Show product list
                 ShowProductInfo();
                 Console.WriteLine("\nType 'Done' anytime to finish adding products.");
 
                 // Get product ID
                 Console.Write("\nEnter the ID of the product you want to buy: ");
-                string inputId = (Console.ReadLine() ?? "").Trim().ToLower();
+                string inputId = (Console.ReadLine() ?? "").ToLower();
 
                 if (inputId == "done")
                     break;
@@ -51,18 +51,28 @@ namespace ShopManager
                     continue;
                 }
 
-                // Find product
-                var product = Product.ProductsList.AllProducts.FirstOrDefault(p => p.Id == productId);
+                
+                // 2.Find product
+                ProductProperties product = null;
+                foreach (var p in ProductFolder.ProductList.AllProducts)
+                {
+                    if (p.Id == productId)
+                    {
+                        product = p; // the product was found
+                        break;       // stop searching
+                    }
+                }
+
                 if (product == null)
                 {
                     Console.WriteLine("Product not found.");
-                    Console.ReadKey(true);
-                    continue;
+                    Console.ReadKey(true); 
+                    continue;              // go to the next loop iteration
                 }
 
                 // Get quantity
                 Console.Write($"Enter quantity (available stock: {product.Stock}): ");
-                string inputQty = (Console.ReadLine() ?? "").Trim().ToLower();
+                string inputQty = (Console.ReadLine() ?? "").ToLower();
 
                 if (inputQty == "done")
                     break;
@@ -88,7 +98,8 @@ namespace ShopManager
                     continue;
                 }
 
-                // Add to cart
+                
+                // 3.Add to cart
                 user.ShoppingCart.Add(new ShoppingCartItem(product, quantity));
                 product.Stock -= quantity; // decrease stock
 
@@ -98,7 +109,7 @@ namespace ShopManager
         }
 
         // Case 2: Shopping cart
-        public static void ViewShoppingCart(Customer.Customer user)
+        public static void ViewShoppingCart(CustomerFolder.CustomerProperties user)
         {
             //Console.Clear();
             CultureInfo swedish = new CultureInfo("sv-SE");
@@ -109,7 +120,6 @@ namespace ShopManager
                 Console.ReadKey();
                 return;
             }
-
 
             bool running = true;
             while (running)
@@ -164,7 +174,7 @@ namespace ShopManager
             Console.Write("Enter your choice: ");
         }
 
-        private static void RemoveItemFromCart(Customer.Customer user)
+        private static void RemoveItemFromCart(CustomerFolder.CustomerProperties user)
         {
             Console.Write("Enter the ID of the product to remove: ");
             if (!int.TryParse(Console.ReadLine(), out int productID))
@@ -217,7 +227,7 @@ namespace ShopManager
 
 
         // Case 3: Make payment
-        public static void MakePayment(Customer.Customer user)
+        public static void MakePayment(CustomerFolder.CustomerProperties user)
         {
             Console.Clear();
             if (user.ShoppingCart.Count == 0)
