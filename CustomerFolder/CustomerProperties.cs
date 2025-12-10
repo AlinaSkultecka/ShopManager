@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -16,6 +18,9 @@ namespace ShopManager.CustomerFolder
     }
     public class CustomerProperties
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }   // maps to MongoDB _id
         public string Username { get; private set; }
         public string Password { get; private set; }
         public CustomerLevel Level { get; private set; }
@@ -26,7 +31,13 @@ namespace ShopManager.CustomerFolder
             get { return _shoppingCart; }
             set { _shoppingCart = value; }
         }
-   
+
+        // Parameterless constructor for MongoDB
+        public CustomerProperties()
+        {
+            _shoppingCart = new List<ShoppingCartItem>();
+        }
+
         public CustomerProperties(string username, string password, CustomerLevel level = CustomerLevel.BronseLevel)
         {
             Username = username;

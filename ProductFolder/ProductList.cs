@@ -15,9 +15,15 @@ namespace ShopManager.ProductFolder
     public static class IdGenerator
     {
         private static int _currentId = 0;
+
         public static int NextId() => ++_currentId;
+
+        public static void Initialize(int startValue)
+        {
+            _currentId = startValue;
+        }
     }
-    
+
     public class ProductList
     {
          public static SoftToy[] SoftToys = new SoftToy[] {

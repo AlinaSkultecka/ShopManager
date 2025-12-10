@@ -8,7 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\mongo-connection.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Data\mongo-connection.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Cake.Core" Version="5.1.0" />
+    <PackageReference Include="MongoDB.Driver" Version="3.5.2" />
     <PackageReference Include="NAudio" Version="2.2.1" />
   </ItemGroup>
 
