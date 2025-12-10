@@ -1,4 +1,5 @@
 ﻿using ShopManager.CustomerFolder;
+using ShopManager.Data;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -34,7 +35,7 @@ namespace ShopManager
         }
 
         // Upgrade membership level 
-        public static void UpgradeMembership(CustomerFolder.CustomerProperties currentUser, decimal grandTotal)
+        public static async Task UpgradeMembership(CustomerProperties currentUser, decimal grandTotal, MongoDbService db)
         {
             if (grandTotal >= 1000)
             {
@@ -46,9 +47,14 @@ namespace ShopManager
                 else if (currentUser.Level == CustomerLevel.SilverLevel)
                     currentUser.SetLevel(CustomerLevel.GoldLevel);
 
-                // Notify user
+                // If changed, notify + save to DB
                 if (previousLevel != currentUser.Level)
+                {
                     Console.WriteLine($"Congrats! Your membership is now {currentUser.Level}!");
+
+                    // 🔹 Persist new level in MongoDB
+                    await db.UpdateCustomerAsync(currentUser);
+                }
             }
         }
     }

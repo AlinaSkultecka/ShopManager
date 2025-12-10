@@ -101,7 +101,7 @@ namespace ShopManager
                                 break;
 
                             case "3":
-                                ShopHelper.MakePayment(currentUser!, db);
+                                await ShopHelper.MakePayment(currentUser!, db);
                                 break;
 
                             case "4":

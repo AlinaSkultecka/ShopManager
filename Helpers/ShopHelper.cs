@@ -248,7 +248,7 @@ namespace ShopManager.Helpers
 
 
         // Case 3: Make payment
-        public static void MakePayment(CustomerProperties user, MongoDbService db)
+        public static async Task MakePayment(CustomerProperties user, MongoDbService db)
         {
             Console.Clear();
             if (user.ShoppingCart.Count == 0)
@@ -275,7 +275,9 @@ namespace ShopManager.Helpers
                 Console.WriteLine("\nProcessing payment...");
                 Thread.Sleep(1500); // Simulate delay
                 Console.WriteLine("\nPayment successful! Thank you for your purchase.");
-                Discount.UpgradeMembership(user, grandTotal);
+
+                // Upgrade membership AND save to MongoDB
+                await Discount.UpgradeMembership(user, grandTotal, db);
                 // Clear cart after payment
                 user.ShoppingCart.Clear();
             }
