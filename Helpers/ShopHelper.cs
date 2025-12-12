@@ -32,8 +32,6 @@ namespace ShopManager.Helpers
                 }
             }
         }
-
-        // Case 1: Choose a product
         public static async Task AddToShoppingCart(CustomerProperties user, MongoDbService db)
         {
             while (true)

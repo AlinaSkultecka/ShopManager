@@ -185,7 +185,7 @@ namespace ShopManager.Helpers
                 return;
             }
 
-            // 🔹 Check if the product with this Id actually exists
+            // Check if the product with this Id actually exists
             var product = products.FirstOrDefault(p => p.Id == id);
             if (product == null)
             {
@@ -194,7 +194,7 @@ namespace ShopManager.Helpers
                 return;
             }
 
-            // Now we know it exists – OK to delete
+            // The product exists – OK to delete
             await db.DeleteProductAsync(id);
 
             Console.WriteLine($"Product '{product.Name}' (ID: {product.Id}) deleted.");

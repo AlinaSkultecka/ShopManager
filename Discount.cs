@@ -52,7 +52,7 @@ namespace ShopManager
                 {
                     Console.WriteLine($"Congrats! Your membership is now {currentUser.Level}!");
 
-                    // 🔹 Persist new level in MongoDB
+                    // Persist new level in MongoDB
                     await db.UpdateCustomerAsync(currentUser);
                 }
             }

@@ -28,7 +28,5 @@ namespace ShopManager.ProductFolder
             Stock = stock;
         }
         public ProductProperties() { }  //it is useed for initialization in ProductsList.cs
-
-
     }
 }

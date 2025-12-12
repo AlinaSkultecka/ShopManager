@@ -26,11 +26,11 @@ namespace ShopManager.Data
 
             var clientSettings = MongoClientSettings.FromConnectionString(connectionString);
 
-            // Optional but recommended (Server API version V1)
+            // Server API version V1 (just in case)
             clientSettings.ServerApi = new ServerApi(ServerApiVersion.V1);
             
             // Create MongoDB client
-            var client = new MongoClient(clientSettings);  // client is the object your app uses to talk to the MongoDB Atlas cluster
+            var client = new MongoClient(clientSettings);  // client is the object the app uses to talk to the MongoDB Atlas cluster
 
             // Database name
             _db = client.GetDatabase("ToyShopDb");
@@ -54,7 +54,7 @@ namespace ShopManager.Data
             await Customers.InsertOneAsync(customer);
         }
 
-        // Read
+        // Read 
         public async Task<List<CustomerProperties>> GetAllCustomersAsync()
         {
             return await Customers.Find(_ => true).ToListAsync();

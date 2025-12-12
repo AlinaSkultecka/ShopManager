@@ -284,7 +284,7 @@ namespace ShopManager
 
         private static bool IsAdmin(CustomerProperties user)
         {
-            // Admin is your seeded user aa / 11
+            // Admin is the seeded user aa / 11
             return user.Username == "aa" && user.Password == "11";
         }
     }
